@@ -1,7 +1,10 @@
 import styled from "styled-components";
+import ReactDOM from "react-dom";
 
 const Side = (props) => {
-  return <SideContainer>{props.children}</SideContainer>;
+  const content = <SideContainer>{props.children}</SideContainer>;
+
+  return ReactDOM.createPortal(content, document.querySelector("#drawer"));
 };
 
 const SideContainer = styled.aside`
@@ -13,6 +16,11 @@ const SideContainer = styled.aside`
  width: 70%
  background: white;
  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+
+ @media (min-width: 768px) {
+  display: none;
+ }
+ }
 `;
 
 export default Side;

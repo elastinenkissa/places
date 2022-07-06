@@ -2,19 +2,49 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 const Links = (props) => {
+  const activeStyle = {
+    background: "#f8df00",
+    borderColor: "#292929",
+    color: "#292929",
+  };
+
   return (
-    <List>
+    <List desktop={props.isDesktop}>
+      <CloseButton onClick={props.onCloseDrawer}>
+        X
+      </CloseButton>
       <li>
-        <NavLink to="/" exact>ALL USERS</NavLink>
+        <NavLink
+          to="/"
+          exact
+          style={({ isActive }) => (isActive ? activeStyle : undefined)}
+        >
+          ALL USERS
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/u1/places">MY PLACES</NavLink>
+        <NavLink
+          to="/u1/places"
+          style={({ isActive }) => (isActive ? activeStyle : undefined)}
+        >
+          MY PLACES
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/places/new">ADD PLACE</NavLink>
+        <NavLink
+          to="/new"
+          style={({ isActive }) => (isActive ? activeStyle : undefined)}
+        >
+          ADD PLACE
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/auth">LOGIN</NavLink>
+        <NavLink
+          to="/auth"
+          style={({ isActive }) => (isActive ? activeStyle : undefined)}
+        >
+          LOGIN
+        </NavLink>
       </li>
     </List>
   );
@@ -42,8 +72,7 @@ const List = styled.ul`
     padding: 0.5rem;
   }
 
-  & a:hover,
-  & a:active {
+  & a:hover {
     background: #f8df00;
     border-color: #292929;
     color: #292929;
@@ -62,10 +91,13 @@ const List = styled.ul`
     outline: none;
   }
 
-  & button:hover,
-  & button:active {
+  & button:hover {
     background: #292929;
     color: white;
+  }
+
+  @media (max-width: 768px) {
+    display: ${(props) => (props.desktop ? `none` : `flex`)};
   }
 
   @media (min-width: 768px) {
@@ -86,12 +118,22 @@ const List = styled.ul`
       background: transparent;
     }
 
-    & button:hover,
-    & button:active {
+    & button:hover {
       background: #f8df00;
       color: #292929;
     }
   }
 `;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+
+  @media(min-width: 768px) {
+    display: none;
+  }
+`
 
 export default Links;

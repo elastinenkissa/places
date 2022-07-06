@@ -1,30 +1,42 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import Main from "./Main";
 import Links from "./Links";
 import Side from "./Side";
+import Backdrop from "../UIElements/Backdrop";
 
 const Nav = (props) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+  };
+
   return (
     <>
-    <Side>
-        <nav>
-            <Links />
-        </nav>
-    </Side>
-    <Main>
-      <Button>
-        <span />
-        <span />
-        <span />
-      </Button>
-      <Title>
-        <Link to="/">Places</Link>
-      </Title>
-
-      <Links />
-    </Main>
+      {drawerOpen && (
+        <>
+          <Backdrop onClick={closeDrawer}></Backdrop>
+          <Side>
+            <StyledNav>
+              <Links onCloseDrawer={closeDrawer} />
+            </StyledNav>
+          </Side>
+        </>
+      )}
+      <Main>
+        <Button onClick={setDrawerOpen}>
+          <span />
+          <span />
+          <span />
+        </Button>
+        <Title>
+          <Link to="/">Places</Link>
+        </Title>
+        <Links isDesktop={true} />
+      </Main>
     </>
   );
 };
@@ -61,13 +73,10 @@ const Title = styled.h1`
   }
 `;
 
-// const Header = styled.nav`
-// display: block;
-
-//  & @media (min-width: 768px) {
-//     display: none;
-//   }
-// `;
-
+const StyledNav = styled.nav`
+  background: white;
+  height: 100%;
+  width: 13rem;
+`;
 
 export default Nav;
