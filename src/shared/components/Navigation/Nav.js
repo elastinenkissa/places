@@ -16,16 +16,13 @@ const Nav = (props) => {
 
   return (
     <>
-      {drawerOpen && (
-        <>
-          <Backdrop onClick={closeDrawer}></Backdrop>
-          <Side>
-            <StyledNav>
-              <Links onCloseDrawer={closeDrawer} />
-            </StyledNav>
-          </Side>
-        </>
-      )}
+      {drawerOpen && <Backdrop onClick={closeDrawer}></Backdrop>}
+      <Side show={drawerOpen}>
+        <StyledNav>
+          <Links onClickLink={closeDrawer} onCloseDrawer={closeDrawer} />
+        </StyledNav>
+      </Side>
+
       <Main>
         <Button onClick={setDrawerOpen}>
           <span />
@@ -57,6 +54,7 @@ const Button = styled.button`
     width: 3rem;
     height: 2.5px;
     background: white;
+  }
 
     @media (min-width: 768px) {
       display: none;
@@ -76,7 +74,7 @@ const Title = styled.h1`
 const StyledNav = styled.nav`
   background: white;
   height: 100%;
-  width: 13rem;
+  width: 15rem;
 `;
 
 export default Nav;

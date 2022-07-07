@@ -1,8 +1,19 @@
 import styled from "styled-components";
 import ReactDOM from "react-dom";
+import { CSSTransition } from "react-transition-group";
 
 const Side = (props) => {
-  const content = <SideContainer>{props.children}</SideContainer>;
+  const content = (
+    <CSSTransition
+      in={props.show}
+      timeout={200}
+      classNames="slide-in-left"
+      mountOnEnter
+      unmountOnExit
+    >
+      <SideContainer onClick={props.onClick}>{props.children}</SideContainer>
+    </CSSTransition>
+  );
 
   return ReactDOM.createPortal(content, document.querySelector("#drawer"));
 };

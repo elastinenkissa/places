@@ -10,10 +10,8 @@ const Links = (props) => {
 
   return (
     <List desktop={props.isDesktop}>
-      <CloseButton onClick={props.onCloseDrawer}>
-        X
-      </CloseButton>
-      <li>
+      <CloseButton onClick={props.onCloseDrawer}>X</CloseButton>
+      <li onClick={props.onCloseDrawer}>
         <NavLink
           to="/"
           exact
@@ -22,7 +20,7 @@ const Links = (props) => {
           ALL USERS
         </NavLink>
       </li>
-      <li>
+      <li onClick={props.onCloseDrawer}>
         <NavLink
           to="/u1/places"
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -30,7 +28,7 @@ const Links = (props) => {
           MY PLACES
         </NavLink>
       </li>
-      <li>
+      <li onClick={props.onCloseDrawer}>
         <NavLink
           to="/new"
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -38,7 +36,7 @@ const Links = (props) => {
           ADD PLACE
         </NavLink>
       </li>
-      <li>
+      <li onClick={props.onCloseDrawer}>
         <NavLink
           to="/auth"
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -131,9 +129,9 @@ const CloseButton = styled.button`
   right: 0;
   margin: 1rem;
 
-  @media(min-width: 768px) {
+  @media (min-width: 768px) {
     display: none;
   }
-`
+`;
 
 export default Links;
