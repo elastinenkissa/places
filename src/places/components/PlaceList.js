@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import Card from "../../shared/components/UIElements/Card";
+import ButtonComponent from "../../shared/components/UIElements/ButtonComponent";
 import PlaceItem from "./PlaceItem";
 
 const PlaceList = (props) => {
   if (props.items.length === 0) {
     return (
-      <>
-        <Card>No places found.</Card>
-        <button>Add a place</button>
-      </>
+      <NoPlaces>
+        <h2>No places found.</h2>
+        <StyledButtonComponent>Add a place</StyledButtonComponent>
+      </NoPlaces>
     );
   }
 
@@ -39,5 +39,20 @@ const List = styled.ul`
   width: 90%;
   max-width: 40rem;
 `;
+
+const NoPlaces = styled.div`
+  margin: 7rem auto 0 auto;
+  text-align: center;
+  width: 25rem;
+
+  & h2 {
+    color: white;
+  }
+`;
+
+const StyledButtonComponent = styled(ButtonComponent)`
+color: white;
+border-color: white;
+`
 
 export default PlaceList;

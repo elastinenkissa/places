@@ -5,6 +5,7 @@ import Users from "./user/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import Nav from "./shared/components/Navigation/Nav";
 import UserPlaces from "./places/pages/UserPlaces";
+import Place from "./places/pages/Place";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Users />} />
           <Route path="/new" element={<NewPlace />} />
           <Route path="/:uid/places" exact element={<UserPlaces />} />
+          <Route path="/places/:placeid" exact element={<Place />} />
         </Routes>
       </Main>
     </BrowserRouter>

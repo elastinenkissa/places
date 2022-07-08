@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Card = (props) => {
   return (
-    <CardContainer>
+    <CardContainer className={props.className}>
       {props.children}
     </CardContainer>
   );
