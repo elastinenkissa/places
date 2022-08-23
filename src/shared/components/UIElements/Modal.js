@@ -50,7 +50,7 @@ const Footer = styled.footer`
 const Header = styled.header`
   width: 100%;
   padding: 1rem 0.5rem;
-  background: #2a006e;
+  background: #ff0055;
   color: white;
 
   & h2 {

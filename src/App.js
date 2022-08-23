@@ -5,21 +5,39 @@ import Users from "./user/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import Nav from "./shared/components/Navigation/Nav";
 import UserPlaces from "./places/pages/UserPlaces";
-import Place from "./places/pages/Place";
+import EditPlace from "./places/pages/EditPlace";
+import Login from "./user/pages/Login";
+import { AuthContext } from "./shared/context/auth-context";
+import { useCallback, useState } from "react";
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
   return (
-    <BrowserRouter>
-      <Main>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Users />} />
-          <Route path="/new" element={<NewPlace />} />
-          <Route path="/:uid/places" exact element={<UserPlaces />} />
-          <Route path="/places/:placeid" exact element={<Place />} />
-        </Routes>
-      </Main>
-    </BrowserRouter>
+    <AuthContext.Provider
+      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+    >
+      <BrowserRouter>
+        <Main>
+          <Nav onLogout={logout} />
+          <Routes>
+            <Route path="/" element={<Users />} />
+            <Route path="/places/new" element={<NewPlace />} />
+            <Route path="/:uid/places" element={<UserPlaces />} />
+            <Route path="/places/:placeid" element={<EditPlace />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </Main>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 };
 

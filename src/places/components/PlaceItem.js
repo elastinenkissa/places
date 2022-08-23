@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import ButtonComponent from "../../shared/components/UIElements/ButtonComponent";
+import Button from "../../shared/components/FormElements/Button";
 import Card from "../../shared/components/UIElements/Card";
+import Map from "../../shared/components/UIElements/Map";
 import Modal from "../../shared/components/UIElements/Modal";
+import { AuthContext } from "../../shared/context/auth-context";
+
 const PlaceItem = (props) => {
+  const auth = useContext(AuthContext);
+
   const [showMap, setShowMap] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
   const openMap = () => setShowMap(true);
 
@@ -15,6 +21,18 @@ const PlaceItem = (props) => {
 
   const footerStyle = { textAlign: "right" };
 
+  const deleteHandler = () => {
+    setShowDelete(true);
+  };
+
+  const cancelDeleteHandler = () => {
+    setShowDelete(false);
+  };
+
+  const confirmDeleteHandler = () => {
+    console.log("bazinga");
+  };
+
   return (
     <>
       <Modal
@@ -23,11 +41,28 @@ const PlaceItem = (props) => {
         header={props.address}
         contentStyle={contentStyle}
         footerStyle={footerStyle}
-        footer={<ButtonComponent onClick={closeMap}>CLOSE</ButtonComponent>}
+        footer={<Button onClick={closeMap}>CLOSE</Button>}
       >
-        <Map>
-            <h2>THE MAP!</h2>
-        </Map>
+        <MapContainer>
+          <Map center={props.coordinates} zoom={16} />
+        </MapContainer>
+      </Modal>
+      <Modal
+        show={showDelete}
+        onCancel={cancelDeleteHandler}
+        header={"Are you sure?"}
+        footer={
+          <>
+            <Button inverse onClick={cancelDeleteHandler}>
+              CANCEL
+            </Button>
+            <Button danger onClick={confirmDeleteHandler}>
+              DELETE
+            </Button>
+          </>
+        }
+      >
+        <p>Deletion is irreversible</p>
       </Modal>
       <ListItem>
         <StyledCard>
@@ -40,11 +75,19 @@ const PlaceItem = (props) => {
             <p>{props.description}</p>
           </Info>
           <Actions>
-            <MapButton onClick={openMap}>VIEW ON MAP</MapButton>
-            <Link to={`/places/${props.id}`}>
-              <EditButton>EDIT</EditButton>
-            </Link>
-            <DeleteButton>DELETE</DeleteButton>
+            <Button inverse onClick={openMap}>
+              VIEW ON MAP
+            </Button>
+            {auth.isLoggedIn && (
+              <Link to={`/places/${props.id}`}>
+                <Button>EDIT</Button>
+              </Link>
+            )}
+            {auth.isLoggedIn && (
+              <Button danger onClick={deleteHandler}>
+                DELETE
+              </Button>
+            )}
           </Actions>
         </StyledCard>
       </ListItem>
@@ -52,41 +95,9 @@ const PlaceItem = (props) => {
   );
 };
 
-const Map = styled.div`
+const MapContainer = styled.div`
   height: 15rem;
   width: 100%;
-`;
-
-const MapButton = styled(ButtonComponent)`
-  color: #ff0055;
-  border-color: #ff0055;
-
-  &:hover {
-    color: white;
-    background-color: #ff0055;
-  }
-`;
-
-const EditButton = styled(ButtonComponent)`
-  color: white;
-  background: #ff0055;
-  border-color: #ff0055;
-
-  &:hover {
-    background-color: #ff3377;
-    border-color: #ff3377;
-  }
-`;
-
-const DeleteButton = styled(ButtonComponent)`
-  color: white;
-  background: #830000;
-  border-color: #830000;
-
-  &:hover {
-    background-color: #bb0000;
-    border-color: #bb0000;
-  }
 `;
 
 const ListItem = styled.li`

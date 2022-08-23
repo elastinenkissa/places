@@ -32,7 +32,7 @@ const Nav = (props) => {
         <Title>
           <Link to="/">Places</Link>
         </Title>
-        <Links isDesktop={true} />
+        <Links isDesktop={true} onClick={props.onLogout} />
       </Main>
     </>
   );

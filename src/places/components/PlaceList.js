@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import ButtonComponent from "../../shared/components/UIElements/ButtonComponent";
+import Button from "../../shared/components/FormElements/Button";
 import PlaceItem from "./PlaceItem";
 
 const PlaceList = (props) => {
   if (props.items.length === 0) {
-    return (
+    return ( 
       <NoPlaces>
         <h2>No places found.</h2>
-        <StyledButtonComponent>Add a place</StyledButtonComponent>
+        <Button>Add a place</Button>
       </NoPlaces>
     );
   }
@@ -50,9 +50,5 @@ const NoPlaces = styled.div`
   }
 `;
 
-const StyledButtonComponent = styled(ButtonComponent)`
-color: white;
-border-color: white;
-`
 
 export default PlaceList;
