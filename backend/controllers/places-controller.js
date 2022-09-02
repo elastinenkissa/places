@@ -1,8 +1,10 @@
-const uuid = require("uuid/v4");
+const { v4: uuidv4 } = require("uuid");
+
+const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/error");
 
-const DUMMY_PLACES = [
+let DUMMY_PLACES = [
   {
     id: 1,
     title: "Bazinga Memorial",
@@ -31,10 +33,16 @@ const DUMMY_PLACES = [
   },
 ];
 
+const getPlaces = (req, res, next) => {
+  const places = DUMMY_PLACES;
+
+  res.json({ places });
+};
+
 const getPlaceById = (req, res, next) => {
-  const id = +req.params.id;
+  const id = req.params.id;
   const place = DUMMY_PLACES.find((place) => {
-    return place.id === id;
+    return place.id == id;
   });
 
   if (!place) {
@@ -47,7 +55,7 @@ const getPlaceById = (req, res, next) => {
 const getPlacesByUser = (req, res, next) => {
   const uid = req.params.uid;
   const places = DUMMY_PLACES.filter((place) => {
-    return place.poster === uid;
+    return place.poster == uid;
   });
 
   if (places.length === 0) {
@@ -59,17 +67,69 @@ const getPlacesByUser = (req, res, next) => {
 };
 
 const createPlace = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.error(errors);
+    return next(new HttpError("Invalid data.", 422));
+  }
+
   const newPlace = {
-    id: uuid(),
+    id: uuidv4(),
     title: req.body.title,
     description: req.body.description,
     address: req.body.address,
     location: req.body.coordinates,
     poster: req.body.poster,
   };
+
   DUMMY_PLACES.push(newPlace);
 
   res.status(201).json({ place: newPlace });
 };
 
-module.exports = { getPlaceById, getPlacesByUser, createPlace };
+const updatePlace = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.error(errors);
+    return next(new HttpError("Invalid data.", 422));
+  }
+
+  const placeId = req.params.id;
+
+  const place = DUMMY_PLACES.find((place) => place.id == placeId);
+
+  const updatingPlace = {
+    ...place,
+    title: req.body.title,
+    description: req.body.description,
+  };
+
+  DUMMY_PLACES = DUMMY_PLACES.map((place) =>
+    placeId == place.id ? updatingPlace : place
+  );
+  res.status(200).json({ place: updatingPlace });
+};
+
+const deletePlace = (req, res, next) => {
+  const placeId = req.params.id;
+  const deletingPlace = DUMMY_PLACES.find((place) => placeId == place.id);
+
+  if (!deletingPlace) {
+    return next(new HttpError("Place already removed.", 404));
+  }
+
+  DUMMY_PLACES = DUMMY_PLACES.filter((place) => placeId != place.id);
+
+  res.status(200).json({ message: "Deleted place." });
+};
+
+module.exports = {
+  getPlaces,
+  getPlaceById,
+  getPlacesByUser,
+  createPlace,
+  updatePlace,
+  deletePlace,
+};

@@ -1,20 +1,28 @@
+const { v4: uuidv4 } = require("uuid");
+
+const { validationResult } = require("express-validator");
+
 const HttpError = require("../models/error");
 
 const DUMMY_USERS = [
   {
     id: "u1",
     name: "John Smith",
-    image:
-      "https://yt3.ggpht.com/a/AATXAJxGaC16CbfsAoWB7Q_hXMrnF4FU0AZO-D1ERA=s900-c-k-c0xffffffff-no-rj-mo",
-    places: 5,
+    email: "johnsmith@gmail.com",
+    password: "test",
   },
   {
     id: "u2",
     name: "Max Mustermann",
-    image: "https://i.kym-cdn.com/photos/images/newsfeed/002/378/234/23a.png",
-    places: 1,
+    email: "maxmustermann@gmail.com",
+    password: "test",
   },
 ];
+
+const getUsers = (req, res, next) => {
+  const users = DUMMY_USERS;
+  res.json({ users });
+};
 
 const getUserById = (req, res, next) => {
   const id = req.params.id;
@@ -25,7 +33,51 @@ const getUserById = (req, res, next) => {
   if (!user) {
     return next(new HttpError("Could not find user with that ID.", 404));
   }
-  res.json({ user });
+
+  res.status(200).json({ user });
 };
 
-module.exports = getUserById;
+const createUser = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.error(errors);
+    return next(new HttpError("Invalid data.", 422));
+  }
+
+  const existingUser = DUMMY_USERS.find(
+    (user) => user.email === req.body.email
+  );
+
+  if (existingUser) {
+    return next(new HttpError("User already exists.", 422));
+  }
+
+  const user = {
+    id: uuidv4(),
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  DUMMY_USERS.push(user);
+
+  res.status(200).json({ user });
+};
+
+const loginUser = (req, res, next) => {
+  const loggingUser = DUMMY_USERS.find((user) => user.email === req.body.email);
+
+  if (!loggingUser || loggingUser.password !== req.body.password) {
+    return next(new HttpError("Wrong credentials.", 401));
+  }
+
+  res.json({ message: "Login succesful." });
+};
+
+module.exports = {
+  getUsers,
+  getUserById,
+  createUser,
+  loginUser,
+};
