@@ -9,7 +9,7 @@ const {
   getUserById,
   createUser,
   loginUser,
-} = require("../controllers/users-controller");
+} = require("../controllers/users");
 
 router.get("/", getUsers);
 

@@ -1,22 +1,25 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+require('dotenv').config();
+require('express-async-errors')
+const express = require('express');
 
-const placesRoute = require("./routes/places-route");
-const usersRoute = require("./routes/users-route");
-const HttpError = require("./models/error");
+const placesRoute = require('./routes/places');
+const usersRoute = require('./routes/users');
+const HttpError = require('./models/error');
+const mongoose = require('mongoose');
+const { MONGODB_URI, PORT } = require('./util/config');
 
 const app = express();
 
-app.use(bodyParser.json())
+app.use(express.json());
 
-app.use("/api/places", placesRoute);
+app.use('/api/places', placesRoute);
 
-app.use("/api/users", usersRoute);
+app.use('/api/users', usersRoute);
 
 app.use((req, res, next) => {
-  const error = new HttpError("Could not find route.", 404)
-  next(error)
-})
+  const error = new HttpError('Could not find route.', 404);
+  next(error);
+});
 
 app.use((error, req, res, next) => {
   if (res.headersSent) {
@@ -24,11 +27,18 @@ app.use((error, req, res, next) => {
   }
   res
     .status(error.code || 500)
-    .json({ message: error.message || "Unknown error occured." });
+    .json({ message: error.message || 'Unknown error occured.' });
 });
 
-const PORT = 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+mongoose
+  .connect(MONGODB_URI)
+  .then((db) => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+    console.log(`Connected to the database "${db.connections[0].name}"`);
+  })
+  .catch((error) => {
+    console.log(error);
+  });

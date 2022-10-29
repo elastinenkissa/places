@@ -11,7 +11,7 @@ const {
   createPlace,
   updatePlace,
   deletePlace,
-} = require("../controllers/places-controller");
+} = require("../controllers/places");
 
 router.get("/", getPlaces);
 
