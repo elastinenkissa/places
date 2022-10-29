@@ -41,7 +41,8 @@ const createUser = async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     passwordHash: password,
-    image: req.body.imageUrl,
+    image:
+      'https://th.bing.com/th/id/R.4772001b467b480cd3579e97bafb352f?rik=cfoBa0PcK3IdWQ&pid=ImgRaw&r=0',
   });
 
   await user.save();

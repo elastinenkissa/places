@@ -1,7 +1,5 @@
 import UsersList from "../components/UsersList";
 
-import uuid from 'react-uuid';
-
 const Users = () => {
   const USERS = [
     {

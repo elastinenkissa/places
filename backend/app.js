@@ -1,16 +1,21 @@
 require('dotenv').config();
-require('express-async-errors')
+require('express-async-errors');
+
 const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const placesRoute = require('./routes/places');
 const usersRoute = require('./routes/users');
 const HttpError = require('./models/error');
-const mongoose = require('mongoose');
+
 const { MONGODB_URI, PORT } = require('./util/config');
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use('/api/places', placesRoute);
 
@@ -29,7 +34,6 @@ app.use((error, req, res, next) => {
     .status(error.code || 500)
     .json({ message: error.message || 'Unknown error occured.' });
 });
-
 
 mongoose
   .connect(MONGODB_URI)
