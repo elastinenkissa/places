@@ -8,7 +8,7 @@ import UserPlaces from './places/pages/UserPlaces';
 import EditPlace from './places/pages/EditPlace';
 import Login from './user/pages/Login';
 import { AuthContext } from './shared/context/auth-context';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

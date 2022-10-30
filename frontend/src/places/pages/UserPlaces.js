@@ -1,6 +1,6 @@
 import PlaceList from '../components/PlaceList';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 
@@ -15,7 +15,7 @@ const UserPlaces = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/places/user/${uid}`
+          `/api/places/user/${uid}`
         );
         const responseData = await response.json();
 
@@ -36,7 +36,7 @@ const UserPlaces = () => {
     <>
       {loading && <LoadingSpinner />}
       {error && <ErrorModal error={error} onClear={() => setError(null)} />}
-      <PlaceList items={places} />
+      <PlaceList loading={loading} items={places} />
     </>
   );
 };

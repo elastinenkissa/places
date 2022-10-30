@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import UsersList from '../components/UsersList';
@@ -12,7 +12,7 @@ const Users = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/users');
+      const response = await fetch('/api/users');
       const responseData = await response.json();
 
       if (!response.ok) {

@@ -1,9 +1,10 @@
+import React from "react";
 import styled from "styled-components";
 import Button from "../../shared/components/FormElements/Button";
 import PlaceItem from "./PlaceItem";
 
 const PlaceList = (props) => {
-  if (props.items.length === 0) {
+  if (props.items.length === 0 && !props.loading) {
     return ( 
       <NoPlaces>
         <h2>No places found.</h2>

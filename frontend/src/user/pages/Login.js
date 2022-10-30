@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/components/FormElements/Button';
 import Input from '../../shared/components/FormElements/Input';
@@ -51,7 +51,7 @@ const Login = (props) => {
 
     if (isNewUser) {
       try {
-        const response = await fetch('http://localhost:5000/api/users/signup', {
+        const response = await fetch('/api/users/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Login = (props) => {
 
     if (!isNewUser) {
       try {
-        const response = await fetch('http://localhost:5000/api/users/login', {
+        const response = await fetch('/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

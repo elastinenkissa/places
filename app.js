@@ -17,6 +17,8 @@ app.use(express.json());
 
 app.use(cors());
 
+app.use(express.static('build'));
+
 app.use('/api/places', placesRoute);
 
 app.use('/api/users', usersRoute);

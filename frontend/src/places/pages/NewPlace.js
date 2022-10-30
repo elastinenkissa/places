@@ -5,6 +5,7 @@ import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../../util/validators";
 import { useForm } from "../../shared/hooks/useForm";
 import Form from "../../shared/components/FormElements/Form";
 import styled from "styled-components";
+import React from "react";
 
 const NewPlace = () => {
   const [formState, inputHandler] = useForm(
