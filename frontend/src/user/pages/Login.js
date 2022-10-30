@@ -11,9 +11,13 @@ import {
 } from '../../util/validators';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 
 const Login = (props) => {
   const [isNewUser, setIsNewUser] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const auth = useContext(AuthContext);
 
@@ -45,6 +49,7 @@ const Login = (props) => {
     event.preventDefault();
     if (isNewUser) {
       try {
+        setLoading(true);
         const response = await fetch('http://localhost:5000/api/users/signup', {
           method: 'POST',
           headers: {
@@ -59,13 +64,19 @@ const Login = (props) => {
 
         const responseData = await response.json();
         console.log(responseData);
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData);
+        setLoading(false);
+        auth.login();
+        redirect('/');
       } catch (error) {
-        console.log('error:' + error);
+        console.log(error);
+        setLoading(false);
+        setError(error.message);
       }
     }
-
-    auth.login();
-    redirect('/');
   };
 
   const headingText = isNewUser
@@ -80,6 +91,8 @@ const Login = (props) => {
 
   return (
     <>
+      {error && <ErrorModal onClear={() => setError(null)} error={error} />}
+      {loading && <LoadingSpinner />}
       <Heading>{headingText}</Heading>
       <StyledForm onSubmit={loginHandler}>
         {isNewUser && (

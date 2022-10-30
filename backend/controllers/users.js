@@ -37,6 +37,11 @@ const createUser = async (req, res, next) => {
 
   const password = await bcrypt.hash(req.body.password, 10);
 
+  const alreadyExists = await User.findOne({ email: req.body.email });
+  if (alreadyExists) {
+    return next(new HttpError('User already exists', 400));
+  }
+
   const user = new User({
     name: req.body.name,
     email: req.body.email,
