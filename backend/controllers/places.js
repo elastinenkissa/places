@@ -33,12 +33,7 @@ const getPlacesByUser = async (req, res, next) => {
     'poster',
     '-places'
   );
-
-  if (!places || places.length === 0) {
-    return next(
-      new HttpError('Could not find places posted by that user.', 404)
-    );
-  }
+  
   res.status(200).json(places);
 };
 

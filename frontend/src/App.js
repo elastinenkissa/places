@@ -1,14 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import styled from "styled-components";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import styled from 'styled-components';
 
-import Users from "./user/pages/Users";
-import NewPlace from "./places/pages/NewPlace";
-import Nav from "./shared/components/Navigation/Nav";
-import UserPlaces from "./places/pages/UserPlaces";
-import EditPlace from "./places/pages/EditPlace";
-import Login from "./user/pages/Login";
-import { AuthContext } from "./shared/context/auth-context";
-import { useCallback, useState } from "react";
+import Users from './user/pages/Users';
+import NewPlace from './places/pages/NewPlace';
+import Nav from './shared/components/Navigation/Nav';
+import UserPlaces from './places/pages/UserPlaces';
+import EditPlace from './places/pages/EditPlace';
+import Login from './user/pages/Login';
+import { AuthContext } from './shared/context/auth-context';
+import { useCallback, useState } from 'react';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,9 +22,7 @@ const App = () => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
-    >
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       <BrowserRouter>
         <Main>
           <Nav onLogout={logout} />

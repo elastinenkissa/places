@@ -25,7 +25,7 @@ const Login = (props) => {
     {
       name: {
         value: '',
-        isValid: false,
+        isValid: isNewUser ? false : true,
       },
       email: {
         value: '',
@@ -47,9 +47,10 @@ const Login = (props) => {
 
   const loginHandler = async (event) => {
     event.preventDefault();
+    setLoading(true);
+
     if (isNewUser) {
       try {
-        setLoading(true);
         const response = await fetch('http://localhost:5000/api/users/signup', {
           method: 'POST',
           headers: {
@@ -64,15 +65,49 @@ const Login = (props) => {
 
         const responseData = await response.json();
         console.log(responseData);
+
         if (!response.ok) {
           throw new Error(responseData.message);
         }
+
         console.log(responseData);
+
         setLoading(false);
         auth.login();
         redirect('/');
       } catch (error) {
         console.log(error);
+        setLoading(false);
+        setError(error.message);
+      }
+    }
+
+    if (!isNewUser) {
+      try {
+        const response = await fetch('http://localhost:5000/api/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+        });
+
+        const responseData = await response.json();
+        console.log(responseData);
+
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+
+        console.log(responseData);
+
+        setLoading(false);
+        auth.login();
+        redirect('/');
+      } catch (error) {
         setLoading(false);
         setError(error.message);
       }

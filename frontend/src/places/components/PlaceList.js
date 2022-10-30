@@ -14,12 +14,12 @@ const PlaceList = (props) => {
 
   return (
     <List>
-      {props.items.map((place) => {
+      {props.items?.map((place) => {
         return (
           <PlaceItem
             key={place.id}
             id={place.id}
-            image={place.imgUrl}
+            image={place.image}
             title={place.title}
             description={place.description}
             address={place.address}
