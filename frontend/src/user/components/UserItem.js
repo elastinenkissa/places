@@ -5,7 +5,7 @@ import Avatar from "../../shared/components/UIElements/Avatar";
 import Card from "../../shared/components/UIElements/Card";
 import React from "react";
 
-const UserItem = (props) => {
+const UserItem = (props) => { 
   return (
     <ListItem>
         <Card >
