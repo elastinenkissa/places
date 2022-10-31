@@ -22,7 +22,7 @@ const Links = (props) => {
     <List desktop={props.isDesktop}>
       <CloseButton onClick={props.onCloseDrawer}>X</CloseButton>
       <li onClick={props.onCloseDrawer}>
-        <NavLink to="/" exact="true" style={activeLink}>
+        <NavLink to="/" end style={activeLink}>
           ALL USERS
         </NavLink>
       </li>
