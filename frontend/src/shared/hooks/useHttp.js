@@ -41,7 +41,7 @@ export const useHttp = () => {
 
   useEffect(() => {
     return () => {
-      activeRequests.current.forEach((abortController) =>
+      activeRequests.current.forEach((abortController) => 
         abortController.abort()
       );
     };
