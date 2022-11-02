@@ -11,7 +11,8 @@ const Form = (props) => {
 
 const StyledForm = styled.form`
   @media (max-width: 768px) {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     text-align: center;
     height: auto;
   }

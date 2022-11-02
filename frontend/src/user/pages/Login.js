@@ -105,7 +105,7 @@ const Login = (props) => {
       {error && <ErrorModal onClear={clearError} error={error} />}
       {loading && <LoadingSpinner />}
       <Heading>{headingText}</Heading>
-      <StyledForm onSubmit={loginHandler}>
+      <Form onSubmit={loginHandler}>
         {isNewUser && (
           <Input
             id="name"
@@ -147,7 +147,7 @@ const Login = (props) => {
           </StyledButton>
           <SwitchButton onClick={switchModeHandler}>{footerText}</SwitchButton>
         </FormFooter>
-      </StyledForm>
+      </Form>
     </>
   );
 };
@@ -155,12 +155,6 @@ const Login = (props) => {
 const StyledButton = styled(Button)`
   @media (max-width: 768px) {
     width: 100%;
-  }
-`;
-
-const StyledForm = styled(Form)`
-  @media (max-width: 768px) {
-    height: 80vw;
   }
 `;
 

@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import Button from "../../shared/components/FormElements/Button";
-import Card from "../../shared/components/UIElements/Card";
-import Map from "../../shared/components/UIElements/Map";
-import Modal from "../../shared/components/UIElements/Modal";
-import { AuthContext } from "../../shared/context/auth-context";
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import Button from '../../shared/components/FormElements/Button';
+import Card from '../../shared/components/UIElements/Card';
+import Map from '../../shared/components/UIElements/Map';
+import Modal from '../../shared/components/UIElements/Modal';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const PlaceItem = (props) => {
   const auth = useContext(AuthContext);
@@ -19,7 +19,7 @@ const PlaceItem = (props) => {
 
   const contentStyle = { padding: 0 };
 
-  const footerStyle = { textAlign: "right" };
+  const footerStyle = { textAlign: 'right' };
 
   const deleteHandler = () => {
     setShowDelete(true);
@@ -30,8 +30,10 @@ const PlaceItem = (props) => {
   };
 
   const confirmDeleteHandler = () => {
-    console.log("bazinga");
+    console.log('bazinga');
   };
+
+  const ownedPlace = auth.user.places.find((placeId) => placeId === props.id);
 
   return (
     <>
@@ -50,7 +52,7 @@ const PlaceItem = (props) => {
       <Modal
         show={showDelete}
         onCancel={cancelDeleteHandler}
-        header={"Are you sure?"}
+        header={'Are you sure?'}
         footer={
           <>
             <Button inverse onClick={cancelDeleteHandler}>
@@ -78,12 +80,12 @@ const PlaceItem = (props) => {
             <Button inverse onClick={openMap}>
               VIEW ON MAP
             </Button>
-            {auth.isLoggedIn && (
+            {ownedPlace && (
               <Link to={`/places/${props.id}`}>
                 <Button>EDIT</Button>
               </Link>
             )}
-            {auth.isLoggedIn && (
+            {ownedPlace && (
               <Button danger onClick={deleteHandler}>
                 DELETE
               </Button>
