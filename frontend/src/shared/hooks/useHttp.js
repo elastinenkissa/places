@@ -22,15 +22,20 @@ export const useHttp = () => {
         });
         const responseData = await response.json();
 
+        activeRequests.current = activeRequests.current.filter(
+          (req) => req !== httpAbort
+        );
+
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-
+        setLoading(false);
         return responseData;
       } catch (error) {
-        setError(error.essage);
+        setError(error.message);
+        setLoading(false);
+        throw error;
       }
-      setLoading(false);
     },
     []
   );
@@ -41,7 +46,7 @@ export const useHttp = () => {
 
   useEffect(() => {
     return () => {
-      activeRequests.current.forEach((abortController) => 
+      activeRequests.current.forEach((abortController) =>
         abortController.abort()
       );
     };

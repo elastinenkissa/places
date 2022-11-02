@@ -12,17 +12,20 @@ import React, { useCallback, useState } from 'react';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState()
 
-  const login = useCallback(() => {
+  const login = useCallback((u) => {
     setIsLoggedIn(true);
+    setUser(u)
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUser(null)
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
       <BrowserRouter>
         <Main>
           <Nav onLogout={logout} />

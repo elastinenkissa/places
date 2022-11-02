@@ -13,11 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import { useHttp } from '../../shared/hooks/useHttp';
 
 const Login = (props) => {
   const [isNewUser, setIsNewUser] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { loading, error, sendRequest, clearError } = useHttp();
 
   const auth = useContext(AuthContext);
 
@@ -47,69 +47,45 @@ const Login = (props) => {
 
   const loginHandler = async (event) => {
     event.preventDefault();
-    setLoading(true);
 
     if (isNewUser) {
       try {
-        const response = await fetch('/api/users/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        const data = await sendRequest(
+          '/api/users/signup',
+          'POST',
+          JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
           }),
-        });
-
-        const responseData = await response.json();
-        console.log(responseData);
-
-        if (!response.ok) {
-          throw new Error(responseData.message);
-        }
-
-        console.log(responseData);
-
-        setLoading(false);
-        auth.login();
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        auth.login(data.user);
         redirect('/');
       } catch (error) {
         console.log(error);
-        setLoading(false);
-        setError(error.message);
       }
     }
 
     if (!isNewUser) {
       try {
-        const response = await fetch('/api/users/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        const data = await sendRequest(
+          '/api/users/login',
+          'POST',
+          JSON.stringify({
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
           }),
-        });
-
-        const responseData = await response.json();
-        console.log(responseData);
-
-        if (!response.ok) {
-          throw new Error(responseData.message);
-        }
-
-        console.log(responseData);
-
-        setLoading(false);
-        auth.login();
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        auth.login(data.user);
         redirect('/');
       } catch (error) {
-        setLoading(false);
-        setError(error.message);
+        console.log(error);
       }
     }
   };
@@ -126,7 +102,7 @@ const Login = (props) => {
 
   return (
     <>
-      {error && <ErrorModal onClear={() => setError(null)} error={error} />}
+      {error && <ErrorModal onClear={clearError} error={error} />}
       {loading && <LoadingSpinner />}
       <Heading>{headingText}</Heading>
       <StyledForm onSubmit={loginHandler}>

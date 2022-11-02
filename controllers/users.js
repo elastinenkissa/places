@@ -57,6 +57,7 @@ const createUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
+  
 
   if (!user) {
     return next(new HttpError('User does not exist.', 404));

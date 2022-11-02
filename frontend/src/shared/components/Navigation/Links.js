@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../../context/auth-context";
-import React, { useContext } from "react";
+import styled from 'styled-components';
+import { Link, NavLink, useParams } from 'react-router-dom';
+import { AuthContext } from '../../context/auth-context';
+import React, { useContext } from 'react';
 
 const Links = (props) => {
   const auth = useContext(AuthContext);
 
   const activeStyle = {
-    background: "#f8df00",
-    borderColor: "#292929",
-    color: "#292929",
+    background: '#f8df00',
+    borderColor: '#292929',
+    color: '#292929',
   };
 
   const activeLink = ({ isActive }) => (isActive ? activeStyle : undefined);
@@ -28,7 +28,7 @@ const Links = (props) => {
       </li>
       {auth.isLoggedIn && (
         <li onClick={props.onCloseDrawer}>
-          <NavLink to="/u1/places" style={activeLink}>
+          <NavLink to={`/${auth.user.id}/places`} style={activeLink}>
             MY PLACES
           </NavLink>
         </li>

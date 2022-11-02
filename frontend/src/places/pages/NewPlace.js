@@ -1,34 +1,72 @@
-import Input from "../../shared/components/FormElements/Input";
-import Button from "../../shared/components/FormElements/Button";
+import Input from '../../shared/components/FormElements/Input';
+import Button from '../../shared/components/FormElements/Button';
 
-import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../../util/validators";
-import { useForm } from "../../shared/hooks/useForm";
-import Form from "../../shared/components/FormElements/Form";
-import styled from "styled-components";
-import React from "react";
+import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../util/validators';
+import { useForm } from '../../shared/hooks/useForm';
+import Form from '../../shared/components/FormElements/Form';
+import styled from 'styled-components';
+import React, { useContext } from 'react';
+import { useHttp } from '../../shared/hooks/useHttp';
+import { AuthContext } from '../../shared/context/auth-context';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 const NewPlace = () => {
+  const { loading, error, sendRequest, clearError } = useHttp();
+
+  const redirect = useNavigate();
+
+  const auth = useContext(AuthContext);
+
   const [formState, inputHandler] = useForm(
     {
       title: {
-        value: "",
+        value: '',
         isValid: false,
       },
       description: {
-        value: "",
+        value: '',
+        isValid: false,
+      },
+      address: {
+        value: '',
         isValid: false,
       },
     },
     false
   );
 
-  const addNewPlaceHandler = (event) => {
+  const addNewPlaceHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      await sendRequest(
+        '/api/places',
+        'POST',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          address: formState.inputs.address.value,
+          coordinates: {
+            lng: 45,
+            lat: 45,
+          },
+          imageUrl:
+            'https://th.bing.com/th/id/R.ba91011e61cf6fa0cad7eeb5c33b6124?rik=erb%2bbAjfZva8ow&riu=http%3a%2f%2f3.bp.blogspot.com%2f-QdewDml24mU%2fUNLr9i1KZGI%2fAAAAAAAACI8%2feqJLL9jC7BU%2fs1600%2f15816-dystopia.jpg&ehk=1ZGDWV5eznz78zzM%2bwdAmCON4CrleTbEbOoVubrXpis%3d&risl=&pid=ImgRaw&r=0',
+          userId: auth.user.id,
+        }),
+        { 'Content-Type': 'application/json' }
+      );
+      redirect(`/${auth.user.id}/places`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
+      {error && <ErrorModal error={error} onClear={clearError} />}
+      {loading && <LoadingSpinner />}
       <Form onSubmit={addNewPlaceHandler}>
         <Input
           id="title"
