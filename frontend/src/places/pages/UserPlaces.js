@@ -14,7 +14,6 @@ const UserPlaces = () => {
     try {
       const data = await sendRequest(`/api/places/user/${uid}`);
       setPlaces(data);
-      console.log(places);
     } catch (error) {
       console.log(error);
     }
@@ -22,13 +21,22 @@ const UserPlaces = () => {
 
   useEffect(() => {
     fetchPlaces();
-  }, []);
+  }, [uid]);
+
+  const deleteHandler = async (id) => {
+    try {
+      await sendRequest(`/api/places/${id}`, 'DELETE');
+      setPlaces(places.filter(place => place.id !== id))
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
       {loading && <LoadingSpinner />}
       {error && <ErrorModal error={error} onClear={clearError} />}
-      <PlaceList items={places} />
+      <PlaceList uid={uid} items={places} onDelete={deleteHandler} />
     </>
   );
 };

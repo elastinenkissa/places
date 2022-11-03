@@ -40,7 +40,7 @@ const NewPlace = () => {
   const addNewPlaceHandler = async (event) => {
     event.preventDefault();
     try {
-      await sendRequest(
+      const newPlace = await sendRequest(
         '/api/places',
         'POST',
         JSON.stringify({
@@ -57,6 +57,10 @@ const NewPlace = () => {
         }),
         { 'Content-Type': 'application/json' }
       );
+      auth.updateUser({
+        ...auth.user,
+        places: auth.user.places.concat(newPlace.id),
+      });
       redirect(`/${auth.user.id}/places`);
     } catch (error) {
       console.log(error);

@@ -6,6 +6,7 @@ import Card from '../../shared/components/UIElements/Card';
 import Map from '../../shared/components/UIElements/Map';
 import Modal from '../../shared/components/UIElements/Modal';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useHttp } from '../../shared/hooks/useHttp';
 
 const PlaceItem = (props) => {
   const auth = useContext(AuthContext);
@@ -29,8 +30,8 @@ const PlaceItem = (props) => {
     setShowDelete(false);
   };
 
-  const confirmDeleteHandler = () => {
-    console.log('bazinga');
+  const confirmDeleteHandler = async () => {
+    props.onDelete();
   };
 
   const ownedPlace = auth.user?.places?.find((placeId) => placeId === props.id);

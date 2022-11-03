@@ -24,8 +24,12 @@ const App = () => {
     setUser(null)
   }, []);
 
+  const updateUser = useCallback((u) => {
+    setUser(u)
+  })
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user, updateUser }}>
       <BrowserRouter>
         <Main>
           <Nav onLogout={logout} />

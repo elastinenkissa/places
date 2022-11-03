@@ -1,99 +1,102 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Button from "../../shared/components/FormElements/Button";
-import Card from "../../shared/components/UIElements/Card.js";
-import Input from "../../shared/components/FormElements/Input";
-import { useForm } from "../../shared/hooks/useForm";
-import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../../util/validators";
-import Form from "../../shared/components/FormElements/Form";
-import styled from "styled-components";
-
-const PLACES = [
-  {
-    id: 1,
-    title: "Bazinga Memorial",
-    description: "Truly one of the funniest places in existence.",
-    imgUrl:
-      "https://img-new.cgtrader.com/items/3209261/43d23bcdb1/sheldon-cooper-the-big-bang-theory-3d-model.jpg",
-    address: "Chungus Blvd 420",
-    location: {
-      lng: 7.4543729,
-      lat: 45.3141624,
-    },
-    poster: "u1",
-  },
-  {
-    id: 2,
-    title: "Fourth Knight",
-    description: "#1 Victory Royale.",
-    imgUrl:
-      "https://th.bing.com/th/id/R.a2a3c670c26f048d195c5121cbc5137b?rik=LszVjiHUGQ%2bnHQ&riu=http%3a%2f%2fwww.pwrdown.com%2fwp-content%2fuploads%2f2018%2f01%2fEvening_DurrrBurger.jpg&ehk=2r9K%2bCpHKqZTwb0CSOlrfV0w1TB5%2bERzBeesOZstsTU%3d&risl=&pid=ImgRaw&r=0",
-    address: "Tomato Town 32",
-    location: {
-      lng: -93.8867985,
-      lat: -11.8782385,
-    },
-    poster: "u2",
-  },
-];
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Button from '../../shared/components/FormElements/Button';
+import Input from '../../shared/components/FormElements/Input';
+import { useForm } from '../../shared/hooks/useForm';
+import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../util/validators';
+import Form from '../../shared/components/FormElements/Form';
+import styled from 'styled-components';
+import { useHttp } from '../../shared/hooks/useHttp';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const EditPlace = () => {
-  const placeId = +useParams().placeid;
+  const { placeid } = useParams();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const redirect = useNavigate();
 
-  const identifiedPlace = PLACES.find((place) => place.id === placeId);
+  const auth = useContext(AuthContext);
+
+  const [place, setPlace] = useState();
+
+  const { loading, error, sendRequest, clearError } = useHttp();
+
+  const fetchPlace = async () => {
+    try {
+      const fetchedPlace = await sendRequest(`/api/places/${placeid}`);
+      setPlace(fetchedPlace);
+      setFormData(
+        {
+          title: {
+            value: fetchedPlace.title,
+            isValid: true,
+          },
+          description: {
+            value: fetchedPlace.description,
+            isValid: true,
+          },
+        },
+        true
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlace();
+  }, [placeid, setFormData]);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
-        value: "",
+        value: '',
         isValid: false,
       },
       description: {
-        value: "",
+        value: '',
         isValid: false,
       },
     },
     false
   );
 
-  useEffect(() => {
-    setFormData(
-      {
-        title: {
-          value: identifiedPlace.title,
-          isValid: true,
-        },
-        description: {
-          value: identifiedPlace.description,
-          isValid: true,
-        },
-      },
-      true
-    );
-    setIsLoading(false);
-  }, [setFormData, identifiedPlace]);
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
-  if (!identifiedPlace) {
+  if (!place && !error) {
     return (
-      <Card>
+      <NoPlaces>
         <h2>Could not find the place!</h2>
-      </Card>
+      </NoPlaces>
     );
   }
 
-  const placeUpdateHandler = (event) => {
+  const placeUpdateHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      await sendRequest(
+        `/api/places/${placeid}`,
+        'PATCH',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+        }),
+        {
+          'Content-Type': 'application/json',
+        }
+      );
+      redirect(`/${auth.user.id}/places`);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  if (isLoading) {
-    return <div style={{ color: "white" }}>Loading...</div>;
-  }
 
   return (
     <>
+      {error && <ErrorModal error={error} onClear={clearError} />}
       <Form onSubmit={placeUpdateHandler}>
         <Input
           id="title"
@@ -125,10 +128,20 @@ const EditPlace = () => {
 };
 export default EditPlace;
 
+const NoPlaces = styled.div`
+  margin: 7rem auto 0 auto;
+  text-align: center;
+  width: 25rem;
+
+  & h2 {
+    color: white;
+  }
+`;
+
 const StyledButton = styled(Button)`
   @media (max-width: 768px) {
     margin-top: 8rem;
     height: auto;
     width: 100%;
   }
-`
+`;

@@ -3,6 +3,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttp } from '../../shared/hooks/useHttp';
 import UsersList from '../components/UsersList';
+import styled from 'styled-components';
 
 const Users = () => {
   const [users, setUsers] = useState();
@@ -21,9 +22,20 @@ const Users = () => {
     fetchUsers();
   }, []);
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!users && !error) {
+    return (
+      <NoUsers>
+        <h2>No users available.</h2>
+      </NoUsers>
+    );
+  }
+
   return (
     <>
-      {loading && <LoadingSpinner />}
       <ErrorModal error={error} onClear={clearError} />
       <UsersList items={users} />
     </>
@@ -31,3 +43,13 @@ const Users = () => {
 };
 
 export default Users;
+
+const NoUsers = styled.div`
+  margin: 7rem auto 0 auto;
+  text-align: center;
+  width: 25rem;
+
+  & h2 {
+    color: white;
+  }
+`;

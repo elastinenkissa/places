@@ -1,37 +1,59 @@
-import React from "react";
-import styled from "styled-components";
-import Button from "../../shared/components/FormElements/Button";
-import PlaceItem from "./PlaceItem";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import Button from '../../shared/components/FormElements/Button';
+import { AuthContext } from '../../shared/context/auth-context';
+import PlaceItem from './PlaceItem';
 
 const PlaceList = (props) => {
+  const auth = useContext(AuthContext);
+
   if (props.items.length === 0 && !props.loading) {
-    return ( 
+    return (
       <NoPlaces>
         <h2>No places found.</h2>
-        <Button>Add a place</Button>
+        {auth.user?.id === props.uid && (
+          <Link to="/places/new">
+            <Button>Add a place</Button>
+          </Link>
+        )}
       </NoPlaces>
     );
   }
 
   return (
-    <List>
-      {props.items?.map((place) => {
-        return (
-          <PlaceItem
-            key={place.id}
-            id={place.id}
-            image={place.image}
-            title={place.title}
-            description={place.description}
-            address={place.address}
-            poster={place.poster}
-            coordinates={place.location}
-          />
-        );
-      })}
-    </List>
+    <Container>
+      <List>
+        {props.items?.map((place) => {
+          return (
+            <PlaceItem
+              key={place.id}
+              id={place.id}
+              image={place.image}
+              title={place.title}
+              description={place.description}
+              address={place.address}
+              poster={place.poster}
+              coordinates={place.location}
+              onDelete={() => props.onDelete(place.id)}
+            />
+          );
+        })}
+      </List>
+      {auth.user?.id === props.uid && (
+        <Link style={{ marginBottom: 15 }} to="/places/new">
+          <Button>Add more</Button>
+        </Link>
+      )}
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const List = styled.ul`
   list-style: none;
@@ -50,6 +72,5 @@ const NoPlaces = styled.div`
     color: white;
   }
 `;
-
 
 export default PlaceList;
