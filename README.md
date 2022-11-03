@@ -5,7 +5,7 @@ The frontend was made from scratch. It utilized React context for global state m
 
 The backend was also made from scratch. It's a REST API made using NodeJS and Express, utilizing MVC and storing data to MongoDB with Mongoose. Express Validator is used for additional validation of the incoming data.
 
-You can look at a live preview of this app here https://places-sharing-app-smileyface.herokuapp.com/
+You can look at a live preview of this app here <a href="https://places-sharing-app-smileyface.herokuapp.com/">here</a>
 
 # Usage
 
