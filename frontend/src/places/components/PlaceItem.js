@@ -33,7 +33,7 @@ const PlaceItem = (props) => {
     console.log('bazinga');
   };
 
-  const ownedPlace = auth.user.places.find((placeId) => placeId === props.id);
+  const ownedPlace = auth.user?.places?.find((placeId) => placeId === props.id);
 
   return (
     <>

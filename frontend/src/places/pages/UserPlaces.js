@@ -14,6 +14,7 @@ const UserPlaces = () => {
     try {
       const data = await sendRequest(`/api/places/user/${uid}`);
       setPlaces(data);
+      console.log(places);
     } catch (error) {
       console.log(error);
     }
@@ -21,13 +22,13 @@ const UserPlaces = () => {
 
   useEffect(() => {
     fetchPlaces();
-  }, [uid]);
+  }, []);
 
   return (
     <>
       {loading && <LoadingSpinner />}
       {error && <ErrorModal error={error} onClear={clearError} />}
-      <PlaceList loading={loading} items={places} />
+      <PlaceList items={places} />
     </>
   );
 };
