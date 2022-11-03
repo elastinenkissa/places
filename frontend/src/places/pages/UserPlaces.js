@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useHttp } from '../../shared/hooks/useHttp';
+import styled from 'styled-components';
 
 const UserPlaces = () => {
   const { uid } = useParams();
@@ -26,19 +27,32 @@ const UserPlaces = () => {
   const deleteHandler = async (id) => {
     try {
       await sendRequest(`/api/places/${id}`, 'DELETE');
-      setPlaces(places.filter(place => place.id !== id))
+      setPlaces(places.filter((place) => place.id !== id));
     } catch (error) {
       console.log(error);
     }
+  };
+
+  if (loading) {
+    return <LoadingSpinner />;
   }
 
   return (
     <>
-      {loading && <LoadingSpinner />}
-      {error && <ErrorModal error={error} onClear={clearError} />}
+      <ErrorModal error={error} onClear={clearError} />
       <PlaceList uid={uid} items={places} onDelete={deleteHandler} />
     </>
   );
 };
 
 export default UserPlaces;
+
+const NoPlaces = styled.div`
+  margin: 7rem auto 0 auto;
+  text-align: center;
+  width: 25rem;
+
+  & h2 {
+    color: white;
+  }
+`;

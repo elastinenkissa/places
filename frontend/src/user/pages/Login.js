@@ -102,7 +102,7 @@ const Login = (props) => {
 
   return (
     <>
-      {error && <ErrorModal onClear={clearError} error={error} />}
+      <ErrorModal onClear={clearError} error={error} />
       {loading && <LoadingSpinner />}
       <Heading>{headingText}</Heading>
       <Form onSubmit={loginHandler}>

@@ -69,7 +69,7 @@ const NewPlace = () => {
 
   return (
     <>
-      {error && <ErrorModal error={error} onClear={clearError} />}
+      <ErrorModal error={error} onClear={clearError} />
       {loading && <LoadingSpinner />}
       <Form onSubmit={addNewPlaceHandler}>
         <Input

@@ -96,7 +96,7 @@ const EditPlace = () => {
 
   return (
     <>
-      {error && <ErrorModal error={error} onClear={clearError} />}
+      <ErrorModal error={error} onClear={clearError} />
       <Form onSubmit={placeUpdateHandler}>
         <Input
           id="title"
