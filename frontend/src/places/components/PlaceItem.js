@@ -47,7 +47,8 @@ const PlaceItem = (props) => {
         footer={<Button onClick={closeMap}>CLOSE</Button>}
       >
         <MapContainer>
-          <Map center={props.coordinates} zoom={16} />
+          {/* <Map center={props.coordinates} zoom={16} /> */}
+          <h2>Coming soon {`:)`}</h2>
         </MapContainer>
       </Modal>
       <Modal
