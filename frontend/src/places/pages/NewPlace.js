@@ -11,6 +11,7 @@ import { AuthContext } from '../../shared/context/auth-context';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 
 const NewPlace = () => {
   const { loading, error, sendRequest, clearError } = useHttp();
@@ -33,6 +34,10 @@ const NewPlace = () => {
         value: '',
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
     },
     false
   );
@@ -40,23 +45,15 @@ const NewPlace = () => {
   const addNewPlaceHandler = async (event) => {
     event.preventDefault();
     try {
-      const newPlace = await sendRequest(
-        '/api/places',
-        'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          coordinates: {
-            lng: 45,
-            lat: 45,
-          },
-          imageUrl:
-            'https://th.bing.com/th/id/R.ba91011e61cf6fa0cad7eeb5c33b6124?rik=erb%2bbAjfZva8ow&riu=http%3a%2f%2f3.bp.blogspot.com%2f-QdewDml24mU%2fUNLr9i1KZGI%2fAAAAAAAACI8%2feqJLL9jC7BU%2fs1600%2f15816-dystopia.jpg&ehk=1ZGDWV5eznz78zzM%2bwdAmCON4CrleTbEbOoVubrXpis%3d&risl=&pid=ImgRaw&r=0',
-          userId: auth.user.id,
-        }),
-        { 'Content-Type': 'application/json' }
-      );
+      const formData = new FormData();
+      formData.append('title', formState.inputs.title.value);
+      formData.append('description', formState.inputs.description.value);
+      formData.append('address', formState.inputs.address.value);
+      formData.append('image', formState.inputs.image.value);
+      formData.append('userId', auth.user.id);
+
+      const newPlace = await sendRequest('/api/places', 'POST', formData);
+      console.log(newPlace);
       auth.updateUser({
         ...auth.user,
         places: auth.user.places.concat(newPlace.id),
@@ -97,6 +94,7 @@ const NewPlace = () => {
           errorText="Please enter a valid address."
           onInput={inputHandler}
         />
+        <ImageUpload id="image" center onInput={inputHandler} />
         <StyledButton inverse type="submit" disabled={!formState.isValid}>
           Create place
         </StyledButton>

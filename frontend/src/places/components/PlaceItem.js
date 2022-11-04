@@ -70,7 +70,7 @@ const PlaceItem = (props) => {
       <ListItem>
         <StyledCard>
           <Image>
-            <img src={props.image} alt={props.title} />
+            <img src={`/${props.image}`} alt={props.title} />
           </Image>
           <Info>
             <h2>{props.title}</h2>

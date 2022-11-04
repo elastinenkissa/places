@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 
-const { check } = require("express-validator");
+const { check } = require('express-validator');
 
 const router = express.Router();
 
@@ -11,33 +11,32 @@ const {
   createPlace,
   updatePlace,
   deletePlace,
-} = require("../controllers/places");
+} = require('../controllers/places');
+const { fileUpload } = require('../util/middleware');
 
-router.get("/", getPlaces);
+router.get('/', getPlaces);
 
-router.get("/:id", getPlaceById);
+router.get('/:id', getPlaceById);
 
-router.get("/user/:uid", getPlacesByUser);
+router.get('/user/:uid', getPlacesByUser);
 
 router.post(
-  "/",
+  '/',
+  fileUpload.single('image'),
   [
-    check("title").not().isEmpty(),
-    check("description").isLength({ min: 5 }),
-    check("address").not().isEmpty(),
+    check('title').not().isEmpty(),
+    check('description').isLength({ min: 5 }),
+    check('address').not().isEmpty(),
   ],
   createPlace
 );
 
 router.patch(
-  "/:id",
-  [
-    check("title").not().isEmpty(),
-    check("description").isLength({ min: 5 })
-  ],
+  '/:id',
+  [check('title').not().isEmpty(), check('description').isLength({ min: 5 })],
   updatePlace
 );
 
-router.delete("/:id", deletePlace);
+router.delete('/:id', deletePlace);
 
 module.exports = router;

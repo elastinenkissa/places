@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 
+const fs = require('fs');
 const HttpError = require('../models/error');
 const Place = require('../models/place');
 const User = require('../models/user');
@@ -33,7 +34,7 @@ const getPlacesByUser = async (req, res, next) => {
     'poster',
     '-places'
   );
-  
+
   res.status(200).json(places);
 };
 
@@ -55,8 +56,7 @@ const createPlace = async (req, res, next) => {
     title: req.body.title,
     description: req.body.description,
     address: req.body.address,
-    location: req.body.coordinates,
-    image: req.body.imageUrl,
+    image: req.file.path,
     poster: req.body.userId,
   });
 
@@ -67,6 +67,12 @@ const createPlace = async (req, res, next) => {
   await user.save({ session });
   await session.commitTransaction();
   await session.endSession();
+
+  if (!newPlace) {
+    fs.unlink(imagePath, (err) => {
+      console.log(err);
+    });
+  }
 
   res.status(201).json(newPlace);
 };
@@ -97,6 +103,8 @@ const deletePlace = async (req, res, next) => {
   const deletingPlace = await Place.findById(placeId).populate('poster');
 
   const title = deletingPlace.title;
+
+  const imagePath = deletingPlace.image;
 
   const session = await mongoose.startSession();
   session.startTransaction();

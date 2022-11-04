@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('express-async-errors');
 
+const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -16,6 +17,8 @@ const { errorHandler } = require('./util/middleware');
 const app = express();
 
 app.use(express.json());
+
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use(cors());
 

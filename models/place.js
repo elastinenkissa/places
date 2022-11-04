@@ -18,16 +18,6 @@ const placeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location: {
-    lat: {
-      type: Number,
-      required: true,
-    },
-    lng: {
-      type: Number,
-      required: true,
-    },
-  },
   poster: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
