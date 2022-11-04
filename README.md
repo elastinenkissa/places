@@ -15,6 +15,7 @@ The application's purpose is public place sharing. Users have the possibility of
 
 <ul>
   <li>Implement token authentication</li>
+  <li>Implement local storage</li>
   <li>Implement map using a different API (Google does not accept my dev request)</li>
   <li>Find a new reliable hosting service (Heroku free is ending soon)</li>
 </ul>
