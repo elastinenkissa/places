@@ -11,7 +11,7 @@ You can look at a live preview of this app <a href="https://places-sharing-app-s
 
 The application's purpose is public place sharing. Users have the possibility of creating an account and accessing a list of all existing users and their places, as well as the possibility of creating a place and editing and deleting their own places.
 
-#Todo
+# Todo
 
 <ul>
   <li>Implement token authentication</li>
