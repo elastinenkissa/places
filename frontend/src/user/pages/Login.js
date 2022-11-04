@@ -14,6 +14,7 @@ import { AuthContext } from '../../shared/context/auth-context';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useHttp } from '../../shared/hooks/useHttp';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 
 const Login = (props) => {
   const [isNewUser, setIsNewUser] = useState(false);
@@ -21,12 +22,8 @@ const Login = (props) => {
 
   const auth = useContext(AuthContext);
 
-  const [formState, inputHandler] = useForm(
+  const [formState, inputHandler, setFormData] = useForm(
     {
-      name: {
-        value: '',
-        isValid: isNewUser ? false : true,
-      },
       email: {
         value: '',
         isValid: false,
@@ -40,7 +37,32 @@ const Login = (props) => {
   );
 
   const switchModeHandler = () => {
-    setIsNewUser(!isNewUser);
+    if (isNewUser) {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: undefined,
+          image: undefined,
+        },
+        formState.inputs.email.isValid && formState.inputs.password.isValid
+      );
+    } else {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: {
+            value: '',
+            isValid: false,
+          },
+          image: {
+            value: null,
+            isValid: false,
+          },
+        },
+        false
+      );
+    }
+    setIsNewUser((prevMode) => !prevMode);
   };
 
   const redirect = useNavigate();
@@ -50,18 +72,12 @@ const Login = (props) => {
 
     if (isNewUser) {
       try {
-        const data = await sendRequest(
-          '/api/users/signup',
-          'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          {
-            'Content-Type': 'application/json',
-          }
-        );
+        const formData = new FormData();
+        formData.append('name', formState.inputs.name.value);
+        formData.append('email', formState.inputs.email.value);
+        formData.append('password', formState.inputs.password.value);
+        formData.append('image', formState.inputs.image.value);
+        const data = await sendRequest('/api/users/signup', 'POST', formData);
         auth.login(data.user);
         redirect('/');
       } catch (error) {
@@ -141,6 +157,7 @@ const Login = (props) => {
           value={formState.inputs.password.value}
           valid={formState.inputs.password.isValid}
         />
+        {isNewUser && <ImageUpload center id="image" onInput={inputHandler} />}
         <FormFooter>
           <StyledButton inverse type="submit" disabled={!formState.isValid}>
             {buttonText}

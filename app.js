@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('express-async-errors');
 
+const fs = require('fs');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -10,6 +11,7 @@ const usersRoute = require('./routes/users');
 const HttpError = require('./models/error');
 
 const { MONGODB_URI, PORT } = require('./util/config');
+const { errorHandler } = require('./util/middleware');
 
 const app = express();
 
@@ -24,18 +26,10 @@ app.use('/api/places', placesRoute);
 app.use('/api/users', usersRoute);
 
 app.use((req, res, next) => {
-  const error = new HttpError('Could not find route.', 404);
-  next(error);
+  next(new HttpError('Could not find route.', 404));
 });
 
-app.use((error, req, res, next) => {
-  if (res.headersSent) {
-    return next(error);
-  }
-  res
-    .status(error.code || 500)
-    .json({ message: error.message || 'Unknown error occured.' });
-});
+app.use(errorHandler);
 
 mongoose
   .connect(MONGODB_URI)

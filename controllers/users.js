@@ -31,7 +31,6 @@ const createUser = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.error(errors);
     return next(new HttpError('Invalid data.', 422));
   }
 
@@ -46,8 +45,7 @@ const createUser = async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     passwordHash: password,
-    image:
-      'https://th.bing.com/th/id/R.4772001b467b480cd3579e97bafb352f?rik=cfoBa0PcK3IdWQ&pid=ImgRaw&r=0',
+    image: req.file.path,
   });
 
   await user.save();
@@ -57,7 +55,6 @@ const createUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
-  
 
   if (!user) {
     return next(new HttpError('User does not exist.', 404));

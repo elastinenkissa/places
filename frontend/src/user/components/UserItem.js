@@ -1,26 +1,26 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import Avatar from "../../shared/components/UIElements/Avatar";
-import Card from "../../shared/components/UIElements/Card";
-import React from "react";
+import Avatar from '../../shared/components/UIElements/Avatar';
+import Card from '../../shared/components/UIElements/Card';
+import React from 'react';
 
-const UserItem = (props) => { 
+const UserItem = (props) => {
   return (
     <ListItem>
-        <Card >
-          <Link to={`/${props.id}/places`} >
-            <Image>
-              <Avatar image={props.image} alt={props.name} />
-            </Image>
-            <Info>
-              <h2>{props.name}</h2>
-              <h3>
-                {props.placeCount} {props.placeCount === 1 ? "Place" : "Places"}
-              </h3>
-            </Info>
-          </Link>
-        </Card>
+      <Card>
+        <Link to={`/${props.id}/places`}>
+          <Image>
+            <Avatar image={`/${props.image}`} alt={props.name} />
+          </Image>
+          <Info>
+            <h2>{props.name}</h2>
+            <h3>
+              {props.placeCount} {props.placeCount === 1 ? 'Place' : 'Places'}
+            </h3>
+          </Info>
+        </Link>
+      </Card>
     </ListItem>
   );
 };
