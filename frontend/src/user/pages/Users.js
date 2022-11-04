@@ -11,7 +11,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const data = await sendRequest('http://localhost:5000/api/users');
+      const data = await sendRequest('/api/users');
       setUsers(data);
     } catch (error) {
       console.log(error);

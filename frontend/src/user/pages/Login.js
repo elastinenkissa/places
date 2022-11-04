@@ -77,7 +77,7 @@ const Login = (props) => {
         formData.append('email', formState.inputs.email.value);
         formData.append('password', formState.inputs.password.value);
         formData.append('image', formState.inputs.image.value);
-        const data = await sendRequest('http://localhost:5000/api/users/signup', 'POST', formData);
+        const data = await sendRequest('/api/users/signup', 'POST', formData);
         auth.login(data);
         redirect('/');
       } catch (error) {

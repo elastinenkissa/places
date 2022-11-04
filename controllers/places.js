@@ -68,12 +68,6 @@ const createPlace = async (req, res, next) => {
   await session.commitTransaction();
   await session.endSession();
 
-  if (!newPlace) {
-    fs.unlink(imagePath, (err) => {
-      console.log(err);
-    });
-  }
-
   res.status(201).json(newPlace);
 };
 
@@ -117,6 +111,10 @@ const deletePlace = async (req, res, next) => {
   if (!deletingPlace) {
     return next(new HttpError('Place already removed.', 404));
   }
+
+  fs.unlink(imagePath, (err) => {
+    console.log(err);
+  });
 
   res.status(202).json({ message: `Place ${title} deleted` });
 };
