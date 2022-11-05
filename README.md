@@ -14,6 +14,7 @@ The application's purpose is public place sharing. Users have the possibility of
 # Todo
 
 <ul>
+  <li>Small UI improvements</li>
   <li>Implement token authentication</li>
   <li>Implement local storage</li>
   <li>Implement map using a different API (Google does not accept my dev request)</li>
