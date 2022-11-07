@@ -21,7 +21,6 @@ const UsersList = (props) => {
   );
 };
 
-
 const List = styled.ul`
   list-style: none;
   margin: 0 auto;

@@ -45,6 +45,13 @@ const ListItem = styled.li`
   &:active a {
     background: #ffd900;
   }
+
+  &:hover h2,
+  &:hover h3,
+  &:active h2,
+  &:active h3 {
+    color: #292929;
+  }
 `;
 
 const Image = styled.div`
@@ -63,13 +70,6 @@ const Info = styled.div`
 
   & h3 {
     margin: 0;
-  }
-
-  &:hover h2,
-  &:hover h3,
-  &:active h2,
-  &:active h3 {
-    color: #292929;
   }
 `;
 
