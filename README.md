@@ -14,7 +14,7 @@ The application's purpose is public place sharing. Users have the possibility of
 # Todo
 
 <ul> 
-  <li>Small UI improvements</li>
+  <li>Small UI improvements (Make hovered user name color change when hovering over the user card itself (currently only on text hover), make mobile view user cards the same height)</li>
   <li>Implement token authentication</li>
   <li>Implement local storage</li>
   <li>Implement map using a different API (Google does not accept my dev request)</li>
