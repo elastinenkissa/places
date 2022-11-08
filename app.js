@@ -2,7 +2,6 @@ require('dotenv').config();
 require('express-async-errors');
 
 const path = require('path');
-const fs = require('fs');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -29,7 +28,7 @@ app.use('/api/places', placesRoute);
 app.use('/api/users', usersRoute);
 
 app.use((req, res, next) => {
-  next(new HttpError('Could not find route.', 404));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.use(errorHandler);
