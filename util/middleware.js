@@ -1,6 +1,10 @@
 const multer = require('multer');
 const fs = require('fs');
 const { v4: uuid } = require('uuid');
+const HttpError = require('../models/error');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('./config');
+const User = require('../models/user');
 
 const MIME_TYPES = {
   'image/png': 'png',
@@ -26,6 +30,23 @@ const fileUpload = multer({
   },
 });
 
+const getUser = async (req, res, next) => {
+  const token = req.get('authorization').split(' ')[1];
+
+  if (!token) {
+    return next(new HttpError('Unauthorized', 401));
+  }
+
+  const decodedToken = jwt.verify(token, JWT_SECRET);
+
+  const authorizedUser = await User.findById(decodedToken.id);
+  if (!authorizedUser) {
+    return next(new HttpError('Unauthorized', 401))
+  }
+  req.user = authorizedUser;
+  next();
+};
+
 const errorHandler = (error, req, res, next) => {
   if (req.file) {
     fs.unlink(req.file.path, (error) => {
@@ -40,4 +61,4 @@ const errorHandler = (error, req, res, next) => {
     .json({ message: error.message || 'Unknown error occured.' });
 };
 
-module.exports = { errorHandler, fileUpload };
+module.exports = { errorHandler, fileUpload, getUser };

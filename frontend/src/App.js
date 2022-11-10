@@ -8,28 +8,39 @@ import UserPlaces from './places/pages/UserPlaces';
 import EditPlace from './places/pages/EditPlace';
 import Login from './user/pages/Login';
 import { AuthContext } from './shared/context/auth-context';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
 
   const login = useCallback((u) => {
     setIsLoggedIn(true);
-    setUser(u)
+    setUser(u);
+    localStorage.setItem('user', JSON.stringify(u));
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
-    setUser(null)
+    setUser(null);
+    localStorage.removeItem('user');
   }, []);
 
+  useEffect(() => {
+    const loggedUser = JSON.parse(localStorage.getItem('user'));
+    if (loggedUser) {
+      login(loggedUser);
+    }
+  }, [login]);
+
   const updateUser = useCallback((u) => {
-    setUser(u)
-  })
+    setUser(u);
+  });
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user, updateUser }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, login, logout, user, updateUser }}
+    >
       <BrowserRouter>
         <Main>
           <Nav onLogout={logout} />

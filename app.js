@@ -27,6 +27,10 @@ app.use('/api/places', placesRoute);
 
 app.use('/api/users', usersRoute);
 
+app.use((req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build/index.html'));
+});
+
 app.use(errorHandler);
 
 mongoose

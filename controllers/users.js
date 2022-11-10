@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/error');
 const User = require('../models/user');
+const { JWT_SECRET } = require('../util/config');
 
 const getUsers = async (req, res, next) => {
   const users = await User.find({}).populate('places', '-poster');
@@ -69,7 +71,18 @@ const loginUser = async (req, res, next) => {
     return next(new HttpError('Wrong credentials.', 401));
   }
 
-  res.status(202).json({ message: 'Login succesful.', user });
+  const payload = {
+    id: user.id,
+  };
+
+  const token = jwt.sign(payload, JWT_SECRET);
+
+  res
+    .status(202)
+    .json({
+      message: 'Login succesful.',
+      user: { id: user.id, name: user.name, places: user.places, token },
+    });
 };
 
 module.exports = {

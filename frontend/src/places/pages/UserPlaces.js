@@ -1,15 +1,17 @@
 import PlaceList from '../components/PlaceList';
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useHttp } from '../../shared/hooks/useHttp';
 import styled from 'styled-components';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const UserPlaces = () => {
   const { uid } = useParams();
   const [places, setPlaces] = useState([]);
   const { loading, error, sendRequest, clearError } = useHttp();
+  const auth = useContext(AuthContext);
 
   const fetchPlaces = async () => {
     try {
@@ -26,7 +28,9 @@ const UserPlaces = () => {
 
   const deleteHandler = async (id) => {
     try {
-      await sendRequest(`/api/places/${id}`, 'DELETE');
+      await sendRequest(`/api/places/${id}`, 'DELETE', null, {
+        Authorization: `Bearer ${auth.user.token}`,
+      });
       setPlaces(places.filter((place) => place.id !== id));
     } catch (error) {
       console.log(error);

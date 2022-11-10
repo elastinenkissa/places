@@ -148,6 +148,7 @@ const Actions = styled.div`
 
 const StyledCard = styled(Card)`
   padding: 0;
+  height: auto;
 `;
 
 export default PlaceItem;

@@ -77,8 +77,19 @@ const Login = (props) => {
         formData.append('email', formState.inputs.email.value);
         formData.append('password', formState.inputs.password.value);
         formData.append('image', formState.inputs.image.value);
-        const data = await sendRequest('/api/users/signup', 'POST', formData);
-        auth.login(data);
+        const signupData = await sendRequest('/api/users/signup', 'POST', formData);
+        const data = await sendRequest(
+          '/api/users/login',
+          'POST',
+          JSON.stringify({
+            email: signupData.email,
+            password: formState.inputs.password.value,
+          }),
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        auth.login(data.user);
         redirect('/');
       } catch (error) {
         console.log(error);
@@ -98,6 +109,7 @@ const Login = (props) => {
             'Content-Type': 'application/json',
           }
         );
+        console.log(data);
         auth.login(data.user);
         redirect('/');
       } catch (error) {

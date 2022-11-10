@@ -52,7 +52,9 @@ const NewPlace = () => {
       formData.append('image', formState.inputs.image.value);
       formData.append('userId', auth.user.id);
 
-      const newPlace = await sendRequest('/api/places', 'POST', formData);
+      const newPlace = await sendRequest('/api/places', 'POST', formData, {
+        Authorization: `Bearer ${auth.user.token}`,
+      });
       console.log(newPlace);
       auth.updateUser({
         ...auth.user,

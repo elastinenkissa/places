@@ -86,6 +86,7 @@ const EditPlace = () => {
         }),
         {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.user.token}`
         }
       );
       redirect(`/${auth.user.id}/places`);

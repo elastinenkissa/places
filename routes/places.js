@@ -12,7 +12,7 @@ const {
   updatePlace,
   deletePlace,
 } = require('../controllers/places');
-const { fileUpload } = require('../util/middleware');
+const { fileUpload, getUser } = require('../util/middleware');
 
 router.get('/', getPlaces);
 
@@ -22,6 +22,7 @@ router.get('/user/:uid', getPlacesByUser);
 
 router.post(
   '/',
+  getUser,
   fileUpload.single('image'),
   [
     check('title').not().isEmpty(),
@@ -33,10 +34,11 @@ router.post(
 
 router.patch(
   '/:id',
+  getUser,
   [check('title').not().isEmpty(), check('description').isLength({ min: 5 })],
   updatePlace
 );
 
-router.delete('/:id', deletePlace);
+router.delete('/:id', getUser, deletePlace);
 
 module.exports = router;

@@ -46,7 +46,7 @@ const createPlace = async (req, res, next) => {
     return next(new HttpError('Invalid data.', 422));
   }
 
-  const user = await User.findById(req.body.userId);
+  const user = req.user
 
   if (!user) {
     return next(new HttpError('Could not find user.', 404));
@@ -57,7 +57,7 @@ const createPlace = async (req, res, next) => {
     description: req.body.description,
     address: req.body.address,
     image: req.file.path,
-    poster: req.body.userId,
+    poster: user.id,
   });
 
   const session = await mongoose.startSession();
