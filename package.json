@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "start:dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "start:dev": "webpack-dev-server --mode=development",
+    "build": "webpack --mode=production"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +26,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.2",
     "styled-components": "^5.3.5",
     "uuid": "^9.0.0"
