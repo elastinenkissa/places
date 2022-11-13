@@ -98,7 +98,7 @@ const NewPlace = () => {
         />
         <ImageUpload id="image" center onInput={inputHandler} />
         <StyledButton inverse type="submit" disabled={!formState.isValid}>
-          Create place
+          CREATE PLACE
         </StyledButton>
       </Form>
     </>
