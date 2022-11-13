@@ -42,7 +42,7 @@ const PlaceList = (props) => {
       </List>
       {auth.user?.id === props.uid && (
         <Link style={{ marginBottom: 15 }} to="/places/new">
-          <Button>Add more</Button>
+          <Button>ADD MORE</Button>
         </Link>
       )}
     </Container>
