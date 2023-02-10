@@ -7,7 +7,7 @@ import PlaceItem from './PlaceItem';
 
 const PlaceList = (props) => {
   const auth = useContext(AuthContext);
-
+ 
   if (props.items.length === 0 && !props.loading) {
     return (
       <NoPlaces>

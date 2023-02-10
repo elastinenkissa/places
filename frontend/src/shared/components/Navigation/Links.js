@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/auth-context';
 import React, { useContext } from 'react';
-
+ 
 const Links = (props) => {
   const auth = useContext(AuthContext);
 

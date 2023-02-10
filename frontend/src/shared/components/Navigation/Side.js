@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 import React from "react";
-
+ 
 const Side = (props) => {
   const content = (
     <CSSTransition

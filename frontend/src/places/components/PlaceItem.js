@@ -10,7 +10,7 @@ import { useHttp } from '../../shared/hooks/useHttp';
 
 const PlaceItem = (props) => {
   const auth = useContext(AuthContext);
-
+ 
   const [showMap, setShowMap] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 

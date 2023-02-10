@@ -6,7 +6,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useHttp } from '../../shared/hooks/useHttp';
 import styled from 'styled-components';
 import { AuthContext } from '../../shared/context/auth-context';
-
+ 
 const UserPlaces = () => {
   const { uid } = useParams();
   const [places, setPlaces] = useState([]);

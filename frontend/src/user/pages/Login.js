@@ -19,7 +19,7 @@ import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 const Login = (props) => {
   const [isNewUser, setIsNewUser] = useState(false);
   const { loading, error, sendRequest, clearError } = useHttp();
-
+ 
   const auth = useContext(AuthContext);
 
   const [formState, inputHandler, setFormData] = useForm(

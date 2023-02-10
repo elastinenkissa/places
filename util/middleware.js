@@ -11,7 +11,7 @@ const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpeg',
 };
-
+ 
 const fileUpload = multer({
   limits: 500000,
   storage: multer.diskStorage({

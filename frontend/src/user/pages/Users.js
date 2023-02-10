@@ -17,7 +17,7 @@ const Users = () => {
       console.log(error);
     }
   };
-
+ 
   useEffect(() => {
     fetchUsers();
   }, []);

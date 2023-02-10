@@ -1,5 +1,5 @@
 # Places
-
+ 
 Places is a web application created using React for the frontend and NodeJS, Express and MongoDB for the backend.
 
 The frontend was made from scratch. It utilizes React context for global state managment due to the simplicity of the application. The styling is done using Styled Components. The application is optimized for mobile phones.

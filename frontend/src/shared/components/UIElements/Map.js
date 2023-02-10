@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
-
+ 
 const Map = (props) => {
   const mapRef = useRef();
 

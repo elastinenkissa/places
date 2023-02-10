@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import UserItem from './UserItem';
-
+ 
 const UsersList = (props) => {
   return (
     <List>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
-
+ 
 import Main from "./Main";
 import Links from "./Links";
 import Side from "./Side";

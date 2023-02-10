@@ -5,3 +5,4 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET
 
 module.exports = { MONGODB_URI, PORT, JWT_SECRET };
+ 

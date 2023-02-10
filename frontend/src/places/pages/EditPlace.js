@@ -10,7 +10,7 @@ import { useHttp } from '../../shared/hooks/useHttp';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { AuthContext } from '../../shared/context/auth-context';
-
+ 
 const EditPlace = () => {
   const { placeid } = useParams();
 

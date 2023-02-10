@@ -12,7 +12,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import ImageUpload from '../../shared/components/FormElements/ImageUpload';
-
+ 
 const NewPlace = () => {
   const { loading, error, sendRequest, clearError } = useHttp();
 
