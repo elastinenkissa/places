@@ -6,7 +6,7 @@ The frontend was made from scratch. It utilizes React context for global state m
 
 The backend was also made from scratch. It's a REST API made using NodeJS and Express, utilizing MVC and storing data to MongoDB with Mongoose. Express Validator is used for additional validation of the incoming data.
 
-You can look at a live preview of this app <a href="https://vast-pear-crayfish-tam.cyclic.app/">here</a>
+You can look at a live preview of this app <a href="https://zany-puce-caterpillar-robe.cyclic.app/">here</a>
 
 # Usage
 
